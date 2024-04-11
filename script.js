@@ -3,13 +3,27 @@ let ctx
 let flowField
 let flowFieldAnimation
 
+// Function to start the animation
+function startAnimation() {
+  if (flowFieldAnimation) {
+    cancelAnimationFrame(flowFieldAnimation)
+  }
+  flowFieldAnimation = requestAnimationFrame(flowField.animate.bind(flowField))
+}
 window.onload = function () {
   canvas = document.getElementById('canvas1')
   ctx = canvas.getContext('2d')
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
   flowField = new FlowFieldEffect(ctx, canvas.width, canvas.height)
-  flowField.animate()
+
+  // Attach event listener to the start button
+  document
+    .getElementById('startButton')
+    .addEventListener('click', startAnimation)
+
+  // Initialize animation on page load
+  startAnimation()
 }
 
 window.addEventListener('resize', function () {
@@ -17,7 +31,7 @@ window.addEventListener('resize', function () {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
   flowField = new FlowFieldEffect(ctx, canvas.width, canvas.height)
-  flowField.animate(0)
+  startAnimation()
 })
 
 const mouse = {
